@@ -9,7 +9,7 @@ import (
 	"github.com/digitalocean/go-smbios/smbios"
 )
 
-//Memory Device Structure
+// Memory Device Structure
 type Memory struct {
 	Bank         string `json:"bank"`
 	Size         int    `json:"size"`
@@ -17,21 +17,18 @@ type Memory struct {
 	Type         string `json:"type"`
 	FormFactor   string `json:"formFactor"`
 	Manufacturer string `json:"manufacturer"`
-	Serial       string `json:"serial"`
-	AssetTag     string `json:"assetTag"`
-	PartNumber   string `json:"partNumber"`
 	Speed        int    `json:"speed"`
 	DataWidth    int    `json:"dataWidth"`
 	TotalWidth   int    `json:"totalWidth"`
 }
 
-//Slot availability information
+// Slot availability information
 type Slot struct {
 	Free int `json:"free"`
 	Used int `json:"used"`
 }
 
-//Info returns a slice of Memory struct with Memory Modules Information.
+// Info returns a slice of Memory struct with Memory Modules Information.
 func Info() ([]Memory, error) {
 	var mems []Memory
 	stream, _, err := smbios.Stream()
@@ -67,9 +64,6 @@ func Info() ([]Memory, error) {
 			}
 
 			manufacturer := s.Strings[1]
-			serial := s.Strings[2]
-			assetTag := s.Strings[3]
-			partNumber := s.Strings[4]
 			totalWidth := s.Formatted[4]
 			dataWidth := s.Formatted[6]
 			formFactorBytes := s.Formatted[10]
@@ -90,9 +84,6 @@ func Info() ([]Memory, error) {
 				Type:         memType,
 				FormFactor:   formFactor,
 				Manufacturer: manufacturer,
-				Serial:       serial,
-				AssetTag:     assetTag,
-				PartNumber:   partNumber,
 				Speed:        memSpeed,
 				DataWidth:    int(dataWidth),
 				TotalWidth:   int(totalWidth),
@@ -102,7 +93,7 @@ func Info() ([]Memory, error) {
 	return mems, nil
 }
 
-//Slots returns a Slot struct with the amount of Free and Used slots of memory.
+// Slots returns a Slot struct with the amount of Free and Used slots of memory.
 func Slots() (Slot, error) {
 	var slots Slot
 	stream, _, err := smbios.Stream()
